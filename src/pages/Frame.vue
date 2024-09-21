@@ -17,9 +17,6 @@
     <router-view></router-view>
   </div>
 
-  <!--  <router-link to="/">Index gotyo</router-link>-->
-  <!--  <router-link to="/team">Index team</router-link>-->
-
   <van-tabbar route>
     <van-tabbar-item icon="home-o" name='index' replace to="/">主页</van-tabbar-item>
     <van-tabbar-item icon="search" name='team' replace to="/team">队伍</van-tabbar-item>
@@ -32,7 +29,6 @@
 <script setup lang="ts">
 
 import {useRouter} from "vue-router";
-
 const router = useRouter();
 
 const onClickLeft = () => {

@@ -10,11 +10,14 @@
   },
   "dependencies": {
     "axios": "^1.7.7",
+    "cors": "^2.8.5",
     "vant": "^4.9.2",
     "vue": "^3.4.31",
     "vue-router": "4"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/node": "^22.5.5",
     "@vant/auto-import-resolver": "^1.2.1",
     "@vitejs/plugin-vue": "^5.0.5",
     "typescript": "^5.2.2",
