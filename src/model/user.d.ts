@@ -1,11 +1,12 @@
 export type UserType = {
-    id: number;
+    userId: number;
     username: string;
-    nickName: string;
+    nickname: string;
     avatarUrl?: string;
     gender: number;
     userStatus: number;
     createTime: Date;
     userRole: string;
     tags: string;
+    introduction: string;
 }

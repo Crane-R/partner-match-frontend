@@ -6,6 +6,7 @@ import routes from "./config/route.ts";
 import Login from "./pages/Login.vue";
 import Index from "./pages/Index.vue";
 import Frame from "./pages/Frame.vue";
+import "vant/es/toast/style"
 
 const router = createRouter({
     history: createWebHashHistory(),

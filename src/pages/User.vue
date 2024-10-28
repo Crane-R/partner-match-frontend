@@ -58,12 +58,15 @@ const logout = async () => {
     <van-cell title="用户名" :value="user.username"/>
     <van-cell title="昵称" is-link :value="user.nickname" @click="toEdit('nickname','昵称',user.nickname)"/>
     <van-cell title="简介" is-link :value="user.introduction" @click="toEdit('introduction','简介',user.introduction)"/>
-    <van-cell title="性别" is-link :value="user.gender" @click="toEdit('gender','性别',user.gender)"/>
-    <van-cell title="用户状态" :value="user.userStatus"/>
+    <van-cell title="性别" is-link :value="user.gender==0?'女':user.gender==1?'男':'未知'"
+              @click="toEdit('gender','性别',user.gender)"/>
+    <van-cell title="用户状态" :value="user.userStatus==0?'正常':'冻结'"/>
     <van-cell title="创建时间" :value="formatDate(new Date(user.createTime))"/>
-    <van-cell title="用户角色" :value="user.userRole"/>
+    <van-cell title="用户角色" :value="user.userRole==0?'普通用户':'管理员'"/>
     <van-cell title="标签" is-link @click="toEdit('tags','标签',user.tags)">
-      <van-tag v-for="tag in user.tags" type="primary">{{ tag }}</van-tag>
+      <van-space>
+        <van-tag v-for="tag in user.tags" type="primary">{{ tag }}</van-tag>
+      </van-space>
     </van-cell>
     <van-button plain hairline block type="primary" @click="logout">退出登录</van-button>
   </template>

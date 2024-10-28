@@ -17,27 +17,23 @@ const route = useRoute();
 
 const users: UserType[] = ref([])
 onMounted(async () => {
-
   const userListData = await myAxios.get('user/userQueryByTags', {
     params: {
-      tagNames: '北门',
+      tagNames: route.query.searchText?.toString(),
       isAnd: false
     }
   }).then(function (response) {
-    console.log(response.data.data);
+    console.log(response.data);
 
-    users.value = response.data.data;
+    users.value = response.data;
   }).catch(function (error) {
     console.log(error);
   }).finally(function () {
     // 总是会执行
   });
-  console.log('aaa' + userListData);
   if (userListData) {
     users.value = userListData;
-    console.log('ss' + users.value)
   }
-  console.log('saaaas' + users.value)
 })
 
 </script>
@@ -46,8 +42,6 @@ onMounted(async () => {
 
   <van-card
       v-for="user in users"
-      num="2"
-      price="2.00"
       :desc="user.introduction"
       :title="user.nickName"
       :thumb="user.avatarUrl"
