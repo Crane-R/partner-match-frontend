@@ -6,7 +6,7 @@ import {UserType} from "../model/user";
 
 let currentUser: UserType
 
-const setCurrentUser =async (user: UserType) => {
+const setCurrentUser = async (user: UserType) => {
     currentUser = user
 }
 
@@ -17,7 +17,7 @@ const getCurrentUser = async (): UserType => {
     const res = await myAxios.get('/user/current');
     if (res.code == 20000) {
         await setCurrentUser(res.data)
-        console.log('获取当前用户成功',res.data)
+        console.log('获取当前用户成功', res.data)
     } else {
         console.log('获取当前用户信息失败')
     }

@@ -12,23 +12,23 @@ import {UserType} from "../model/user";
 
 const router = useRouter()
 
-const doCreateTeam = async () => {
-  router.push("/teamAdd")
-}
-
 const teamList: Team[] = ref([])
 const currentUser: UserType = ref()
 onMounted(async () => {
   currentUser.value = await getCurrentUser();
 
-  const res = await myAxios.post('/team/page', {
-    pageSize: 8,
-    pageNum: 1,
-  })
+  const res = await myAxios.get('/team/teamListBySelfCreate')
   if (res.code === 20000) {
     teamList.value = res.data.records;
   }
 })
+
+const refreshData =async () => {
+  const res = await myAxios.get('/team/teamListBySelfCreate')
+  if (res.code === 20000) {
+    teamList.value = res.data.records;
+  }
+}
 
 const doJoinTeam = async (addDto: UserTeamAddDto) => {
   const res = await myAxios.post("/userTeam/add", {
@@ -62,6 +62,18 @@ const doUpdateTeam = (id: number) => {
   })
 }
 
+const doDiscardTeam = async (id: number) => {
+  const res = await myAxios.post("/team/disband", {
+    teamId: id
+  })
+  if (res.code === 20000) {
+    showSuccessToast("解散成功")
+    await refreshData()
+  } else {
+    showFailToast(res.description)
+  }
+}
+
 </script>
 
 <template>
@@ -72,9 +84,6 @@ const doUpdateTeam = (id: number) => {
         @search="onSearch(searchText)"
     />
   </form>
-
-  <van-button type="primary" @click="doCreateTeam">创建队伍</van-button>
-  <van-button type="primary">主要按钮</van-button>
 
   <van-empty v-if="teamList?.length<1" description="找不到队伍"/>
 
@@ -107,6 +116,10 @@ const doUpdateTeam = (id: number) => {
       <van-button v-if="team.captainId===currentUser.userId"
                   size="small"
                   @click="doUpdateTeam(team.teamId)">修改队伍
+      </van-button>
+      <van-button v-if="team.captainId===currentUser.userId"
+                  size="small"
+                  @click="doDiscardTeam(team.teamId)">解散队伍
       </van-button>
     </template>
   </van-card>

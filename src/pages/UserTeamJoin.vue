@@ -21,12 +21,9 @@ const currentUser: UserType = ref()
 onMounted(async () => {
   currentUser.value = await getCurrentUser();
 
-  const res = await myAxios.post('/team/page', {
-    pageSize: 8,
-    pageNum: 1,
-  })
+  const res = await myAxios.get('/team/teamListUserJoin')
   if (res.code === 20000) {
-    teamList.value = res.data.records;
+    teamList.value = res.data;
   }
 })
 
@@ -62,6 +59,26 @@ const doUpdateTeam = (id: number) => {
   })
 }
 
+const refreshData =async () => {
+  const res = await myAxios.get('/team/teamListBySelfCreate')
+  if (res.code === 20000) {
+    teamList.value = res.data.records;
+  }
+}
+
+
+const doQuitTeam = async (id: number) => {
+  const res = await myAxios.post("/team/quit", {
+    teamId: id
+  })
+  if (res.code === 20000) {
+    showSuccessToast("退出成功")
+    await refreshData()
+  } else {
+    showFailToast(res.description)
+  }
+}
+
 </script>
 
 <template>
@@ -72,9 +89,6 @@ const doUpdateTeam = (id: number) => {
         @search="onSearch(searchText)"
     />
   </form>
-
-  <van-button type="primary" @click="doCreateTeam">创建队伍</van-button>
-  <van-button type="primary">主要按钮</van-button>
 
   <van-empty v-if="teamList?.length<1" description="找不到队伍"/>
 
@@ -107,6 +121,10 @@ const doUpdateTeam = (id: number) => {
       <van-button v-if="team.captainId===currentUser.userId"
                   size="small"
                   @click="doUpdateTeam(team.teamId)">修改队伍
+      </van-button>
+      <van-button v-if="team.captainId===currentUser.userId"
+                  size="small"
+                  @click="doQuitTeam(team.teamId)">退出队伍
       </van-button>
     </template>
   </van-card>
