@@ -9,6 +9,7 @@ import type {UserTeamAddDto} from "../model/UserTeamAddDto.ts";
 import {showFailToast, showSuccessToast, showToast} from "vant";
 import {getCurrentUser} from "../services/user.ts";
 import {UserType} from "../model/user";
+import ClipboardJS from "clipboard";
 
 const router = useRouter()
 
@@ -62,6 +63,15 @@ const doUpdateTeam = (id: number) => {
   })
 }
 
+const showInputPassword = ref(false)
+const inputPassword = ref('')
+
+const copyTeamCode = (code: string) => {
+  navigator.clipboard.writeText(code).then(() => {
+    showSuccessToast("复制成功")
+  })
+}
+
 </script>
 
 <template>
@@ -73,7 +83,7 @@ const doUpdateTeam = (id: number) => {
     />
   </form>
 
-  <van-button type="primary" @click="doCreateTeam">创建队伍</van-button>
+  <van-button class="add-button" type="primary" icon="plus" @click="doCreateTeam"/>
 
   <van-empty v-if="teamList?.length<1" description="找不到队伍"/>
 
@@ -93,23 +103,34 @@ const doUpdateTeam = (id: number) => {
       <div>
         过期时间：{{ team.expireTime }}
       </div>
-      <van-button size="small">复制队伍码</van-button>
+      <van-button size="small" @click="copyTeamCode(team.code)">复制队伍码</van-button>
       <van-button
-          v-if="team.captainId!==currentUser.userId"
+          v-if="team.captainId!==currentUser.userId && team.isPublic!=2"
           type="primary" plain size="small"
           @click="doJoinTeam({
                     teamId:team.teamId,
-                    password:team.isPublic==teamStatusEnum['2']?'123':null
+                    password:null
                   })">
         加入队伍
+      </van-button>
+      <van-button
+          v-if="(team.captainId!==currentUser.userId) && team.isPublic==2"
+          type="primary" plain size="small"
+          @click="showInputPassword = true">
+        加入加密队伍
       </van-button>
       <van-button v-if="team.captainId===currentUser.userId"
                   size="small"
                   @click="doUpdateTeam(team.teamId)">修改队伍
       </van-button>
+      <van-dialog v-model:show="showInputPassword" title="输入密码" show-cancel-button @confirm="doJoinTeam({
+                    teamId:team.teamId,
+                    password:inputPassword
+                  })">
+        <van-field v-model="inputPassword"/>
+      </van-dialog>
     </template>
   </van-card>
-
 
 </template>
 

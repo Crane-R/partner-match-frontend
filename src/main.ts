@@ -1,15 +1,13 @@
 import {createApp} from 'vue'
-// import './style.css'
 import Vant from 'vant';
-import {createRouter, createWebHashHistory} from "vue-router";
+import {createRouter, createWebHashHistory, createWebHistory} from "vue-router";
 import routes from "./config/route.ts";
-import Login from "./pages/Login.vue";
-import Index from "./pages/Index.vue";
 import Frame from "./pages/Frame.vue";
 import "vant/es/toast/style"
+import "../global.css"
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes,
 })
 const app = createApp(Frame)

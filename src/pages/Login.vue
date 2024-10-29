@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import myAxios from "../plugins/axios"
-import {showSuccessToast, showToast, Toast} from "vant";
-import {useRouter} from "vue-router";
+import {showSuccessToast} from "vant";
+import {useRoute, useRouter} from "vue-router";
 
 const router = useRouter();
+const route = useRoute()
 
 const username = ref('');
 const password = ref('');
@@ -25,10 +26,7 @@ const onSubmit = async () => {
   if (res.code == 20000) {
     // Toast.success('登录成功');
     showSuccessToast('登录成功');
-    router.push({
-      path: '/',
-      replace: true
-    });
+    window.location.href = route.query?.redirect ?? '/'
   }
 };
 </script>

@@ -25,7 +25,9 @@ const addFormData = ref({...initFormData})
 const showExpireTimePicker = ref(false);
 const showIsPublicPicker = ref(false);
 
-const minDate = new Date();
+let date = new Date();
+date.setDate(date.getDate() + 1);
+const minDate = date;
 const expireTimeConfirm = ({selectedValues}) => {
   addFormData.value.expireTime = selectedValues.join('/');
   showExpireTimePicker.value = false;
