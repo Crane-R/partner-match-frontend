@@ -12,20 +12,23 @@ const onSubmit = async () => {
   const params = new URLSearchParams();
   params.append("username", username.value);
   params.append("password", password.value);
-  console.log(params+'aaa')
+  console.log(params + 'aaa')
   const res = await myAxios.post('user/login', {
     username: username.value,
     password: password.value
-  },{
+  }, {
     headers: {
       'Content-Type': 'application/json'
     }
   });
   console.log('结果' + res)
-  if(res.code == 20000){
+  if (res.code == 20000) {
     // Toast.success('登录成功');
     showSuccessToast('登录成功');
-    router.push('/');
+    router.push({
+      path: '/',
+      replace: true
+    });
   }
 };
 </script>

@@ -74,7 +74,6 @@ const doUpdateTeam = (id: number) => {
   </form>
 
   <van-button type="primary" @click="doCreateTeam">创建队伍</van-button>
-  <van-button type="primary">主要按钮</van-button>
 
   <van-empty v-if="teamList?.length<1" description="找不到队伍"/>
 
